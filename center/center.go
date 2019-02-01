@@ -67,7 +67,7 @@ func (f *Flight) WDB() {
 	go func() {
 		for {
 			f.FlightDB.DB.Exec(sql, "Davie", 30)
-			time.Sleep(1 * time.Second)
+			time.Sleep(1 * time.Millisecond)
 		}
 	}()
 	<-time.After(1 * time.Hour)
