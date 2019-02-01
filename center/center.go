@@ -55,7 +55,7 @@ func (f *Flight) WriteDB(response http.ResponseWriter, request *http.Request) {
 	//<-time.After(1 * time.Hour)
 
 	//f.FlightDB.DB.Where("id >?", 1).Count(user)
-	response.Write([]byte("day day up"))
+	response.Write([]byte("write..."))
 }
 
 func (f *Flight) WDB() {
