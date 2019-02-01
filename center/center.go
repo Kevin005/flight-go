@@ -35,7 +35,7 @@ func (f *Flight) AddAction(pattern string, handler func(http.ResponseWriter, *ht
 //}
 
 func (f *Flight) Run() {
-	fmt.Println("======flight running")
+	fmt.Println("flight-go running, port is: ", config.CommonCfg.Server.Port)
 	http.ListenAndServe(":"+config.CommonCfg.Server.Port, nil)
 }
 
