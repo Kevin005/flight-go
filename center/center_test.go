@@ -32,6 +32,6 @@ func TestRun(t *testing.T) {
 
 func TestFlight_WDB(t *testing.T) {
 	sql := "insert into `test` (`name`,`age`) values (?,?)"
-	f := &Flight{}
+	f := InitFlight()
 	f.FlightDB.DB.Exec(sql, "Davie", 30)
 }
