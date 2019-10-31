@@ -6,7 +6,6 @@ import (
 
 func main() {
 	f := center.InitFlight()
-	f.AddAction("/db/write", f.WriteDB)
-	go f.WDB() // to do
+	f.AddAction("/write", f.WriteDB)
 	f.Run()
 }
