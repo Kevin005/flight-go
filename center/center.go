@@ -20,8 +20,8 @@ type FlightDB struct {
 	DB *xorm.Engine
 }
 
-func InitFlight() *Flight {
-	initConfig() // init all config
+func InitFlight(env string) *Flight {
+	initConfig(env) // init all config
 	return &Flight{
 		FlightDB: &FlightDB{
 			DB: component.Com.DB,
@@ -39,7 +39,7 @@ func (f *Flight) AddAction(pattern string, handler func(http.ResponseWriter, *ht
 //}
 
 func (f *Flight) Run() {
-	fmt.Printf("flight-go running, port :%s", CommonCfg.Server.Port)
+	fmt.Printf("flight-go running port %s", CommonCfg.Server.Port)
 	fmt.Println()
 	http.ListenAndServe(":"+CommonCfg.Server.Port, nil)
 }
@@ -109,11 +109,12 @@ var (
 
 //var InitFlightChannel = make(chan *CommonConfig, 10)
 
-func initConfig() {
+func initConfig(env string) {
 	var err error
 	var cfgPar []byte
 	path, err := os.Getwd()
-	cfgPar, err = ioutil.ReadFile(path + "/config/local/config.yaml")
+	cfgPar, err = ioutil.ReadFile(path + "/config/" + env + "/config.yaml")
+	fmt.Println("config file path: ", path+"/config/"+env+"/config.yaml")
 	if err != nil {
 		panic(fmt.Errorf("flight-go, init config.yaml err: %v", err))
 	}
