@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Kevin005/flight-go/center"
+	"github.com/klbud/flight-go/center"
 )
 
 func main() {
