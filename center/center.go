@@ -2,6 +2,7 @@ package center
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"github.com/Kevin005/flight-go/component"
 	"github.com/go-xorm/xorm"
@@ -18,6 +19,12 @@ type Flight struct {
 
 type FlightDB struct {
 	DB *xorm.Engine
+}
+
+func ParseFlag() string {
+	env := flag.String("e", "local", "environment, -e local|dev")
+	flag.Parse()
+	return *env
 }
 
 func InitFlight(env string) *Flight {
