@@ -1,10 +1,8 @@
-package main
+package middleware
 
 import (
-	"fmt"
 	"log"
 	"net/http"
-	"testing"
 	"time"
 )
 
@@ -14,14 +12,11 @@ type Middleware func(http.HandlerFunc) http.HandlerFunc
 func Logging() Middleware {
 	// Create a new Middleware
 	return func(f http.HandlerFunc) http.HandlerFunc {
-
 		// Define the http.HandlerFunc
 		return func(w http.ResponseWriter, r *http.Request) {
-
 			// Do middleware things
 			start := time.Now()
 			defer func() { log.Println(r.URL.Path, time.Since(start)) }()
-
 			log.Println("Logging")
 			// Call the next middleware/handler in chain
 			f(w, r)
@@ -31,13 +26,10 @@ func Logging() Middleware {
 
 // Method ensures that url can only be requested with a specific method, else returns a 400 Bad Request
 func Method(m string) Middleware {
-
 	// Create a new Middleware
 	return func(f http.HandlerFunc) http.HandlerFunc {
-
 		// Define the http.HandlerFunc
 		return func(w http.ResponseWriter, r *http.Request) {
-
 			// Do middleware things
 			if r.Method != m {
 				http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
@@ -45,7 +37,6 @@ func Method(m string) Middleware {
 			}
 			log.Println(r.Method)
 			// Call the next middleware/handler in chain
-
 			f(w, r)
 		}
 	}
@@ -59,15 +50,4 @@ func Chain(f http.HandlerFunc, middlewares ...Middleware) http.HandlerFunc {
 		f = m(f)
 	}
 	return f
-}
-
-func Hello(w http.ResponseWriter, r *http.Request) {
-	log.Println("hello begin")
-	fmt.Fprintln(w, "hello world")
-	log.Println("hello end")
-}
-
-func TestMain1(t *testing.T) {
-	http.HandleFunc("/", Chain(Hello, Method("GET"), Logging()))
-	http.ListenAndServe(":8080", nil)
 }

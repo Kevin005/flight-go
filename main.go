@@ -7,6 +7,6 @@ import (
 func main() {
 	env := center.ParseFlag()
 	f := center.InitFlight(env)
-	f.AddAction("/write", f.WriteDB)
+	f.GET("/write/db", f.WriteDB)
 	f.Run()
 }

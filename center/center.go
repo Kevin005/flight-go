@@ -4,13 +4,15 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/go-xorm/xorm"
-	"github.com/klbud/flight-go/component"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/go-xorm/xorm"
+	"github.com/klbud/flight-go/component"
+	"github.com/klbud/flight-go/middleware"
+	"gopkg.in/yaml.v2"
 )
 
 type Flight struct {
@@ -36,8 +38,12 @@ func InitFlight(env string) *Flight {
 	}
 }
 
-func (f *Flight) AddAction(pattern string, handler func(http.ResponseWriter, *http.Request)) {
-	http.HandleFunc(pattern, handler)
+func (f *Flight) GET(pattern string, handler func(http.ResponseWriter, *http.Request)) {
+	http.HandleFunc(pattern, middleware.Chain(handler, middleware.Method("GET"), middleware.Logging()))
+}
+
+func (f *Flight) POST(pattern string, handler func(http.ResponseWriter, *http.Request)) {
+	http.HandleFunc(pattern, middleware.Chain(handler, middleware.Method("POST"), middleware.Logging()))
 }
 
 //type Handler struct {
